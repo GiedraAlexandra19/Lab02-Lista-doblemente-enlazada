@@ -1,6 +1,5 @@
 # Lab02-Lista-doblemente-enlazada
 1. Implementar una función maximo de manera iterativa.
-
 2. Implementar una función maximo de forma recursiva.
 
 3. Implementar una función recursiva que imprima los datos de inicio a fin.
