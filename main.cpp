@@ -15,13 +15,13 @@ int main()
     L1.push_back(0);
     L1.push_back(1);
     L1.push_back(12);
-    cout<<"maximo usando funcion iterativa: "<<L1.Maximum()<<'\n';
-    cout<<"maximo usando funcion recursiva: "<<L1.recursiveMaximun()<<'\n';
-    cout<<"funcion imprime datos de inicio a fin de manera recursiva\n";
+    cout<<"Maximo usando funcion iterativa: "<<L1.Maximum()<<'\n';
+    cout<<"Maximo usando funcion recursiva: "<<L1.recursiveMaximun()<<'\n';
+    cout<<"Funcion imprime datos de inicio a fin de manera recursiva\n";
     L1.recursivePrint();
-    cout<<"funcion imprime datos de fin a inicio de manera recursiva\n";
+    cout<<"Funcion imprime datos de fin a inicio de manera recursiva\n";
     L1.reverseRecursivePrint();
-    cout<<"funcion imprime datos de fin a inicio de manera iterativa\n";
+    cout<<"Funcion imprime datos de fin a inicio de manera iterativa\n";
     L1.reversePrint();
     L1.sortA();     //ordena de ascendente
     cout<<"Datos ordenados de manera ascendente\n";
@@ -29,9 +29,9 @@ int main()
     cout<<"Datos ordenados de manera descendente\n";
     L1.sortD();     //ordena de descendente
     L1.print();
-    cout<<"funcion usa Begin() y Next() para imprimir datos\n";
+    cout<<"Funcion usa Begin() y Next() para imprimir datos\n";
     L1.print2();
-    cout<<"funcion usa Last() y Previus() para imprimir datos\n";
+    cout<<"Funcion usa Last() y Previus() para imprimir datos\n";
     L1.print3();
 
     // cout << "----------------------------- Lista 1 -----------------------------------" << endl;
