@@ -234,29 +234,30 @@ int LinkedList<T>::PairCount()
 template<typename T>
 T LinkedList<T>::partition( T* a , int i , int j , bool op )
 {
-    T p = a[i];                       // p is the pivot
-    int m = i;                          // S1 and S2 are initially empty
+    T p = a[i];                         // p es el pivote
+    int m = i;                          // m es la posicion donde terminara el pivote ya ordenado
     for (int k = i + 1; k <= j; k++)
-    {                                   // explore the unknown region
-        if (op)
-        {
-            if ( a[k] < p )
-            {                               // case 2
-                m++;
-                std::swap(a[k], a[m]);           // C++ STL algorithm std::swap
+    {                                   // avanza por el arreglo
+        if (op)                         // true para usar menor
+        {   
+            if ( a[k] < p )             //si el elemento es menor a pivote
+            {                               
+                m++;                    //aumenta m
+                std::swap(a[k], a[m]);  //intercambia a[K] con a[m], deja a [k] al lado izq de donde ira pivote  
             } 
-        }                              // notice that we do nothing in case 1: a[k] >= p
-        else
+        }                              
+        else                            // para usar mayor
         {
             if ( a[k] > p )
-            {                               // case 2
+            {                              
                 m++;
-                std::swap(a[k], a[m]);           // C++ STL algorithm std::swap
-            }                               // notice that we do nothing in case 1: a[k] >= p
+                std::swap(a[k], a[m]);      
+            }                               
         }
     }
-    std::swap(a[i], a[m]);                   // final step, swap pivot with a[m]
-    return m; 
+    std::swap(a[i], a[m]);                  // intercambia pivote con a[m] y deja al pivote ordenado
+                                            // a la izq. de piv estan los menores, a la der. los mayores
+    return m;                               // devuelve la posicion de pivote
 }
 
 template<typename T>
@@ -264,34 +265,36 @@ void LinkedList<T>::quickSort( T* a , int i , int j , bool op)
 {
     if (i < j)
     {
-        int m = partition( a , i , j , op );        // O(N)
-        // a[i..j] ~> a[i..m–1], pivot, a[m+1..j]
-        quickSort( a , i , m - 1 , op );               // recursively sort left subarray
-        // a[m] = pivot is already sorted after partition
-        quickSort( a , m + 1 , j , op );              // then sort right subarray
+        int m = partition( a , i , j , op );            // O(N)
+        // a[i..j] -> a[i..m–1], pivot, a[m+1..j]
+        quickSort( a , i , m - 1 , op );                // llamada recursiva con el subarreglo a la izq de m
+        // a[m] = pivote ya esta ordenado, izq. los menores, der. los mayores
+        quickSort( a , m + 1 , j , op );                // llamada recursiva con el subarreglo a la der de m
     }
 }
 
 template<typename T>
 void LinkedList<T>::sortA()
 {
-    T* arr = new T[_size];
+    T* arr = new T[_size];                  //guarda los valores de la lista en un arreglo dinamico
     Node<T>* tmp = pHead;
-    for( int i=0 ; tmp ; ++i , tmp = tmp->getNext() ) arr[i]=tmp->getValue();
-    quickSort( arr , 0 , _size-1 , true );
+    for( int i=0 ; tmp ; ++i , tmp = tmp->getNext() ) arr[i]=tmp->getValue();   //copia los valores
+    quickSort( arr , 0 , _size-1 , true );                                      //ordena el arrego
     tmp = pHead;
-    for( int i=0 ; tmp ; ++i , tmp = tmp->getNext() ) tmp->setValue(arr[i]);
+    for( int i=0 ; tmp ; ++i , tmp = tmp->getNext() ) tmp->setValue(arr[i]);    //copia el arreglo ordenado en la lista
+    delete arr;
 }
 
 template<typename T>
 void LinkedList<T>::sortD()
 {
-    T* arr = new T[_size];
+    T* arr = new T[_size];                  
     Node<T>* tmp = pHead;
     for( int i=0 ; tmp ; ++i , tmp = tmp->getNext() ) arr[i]=tmp->getValue();
     quickSort( arr , 0 , _size-1 , false );
     tmp = pHead;
     for( int i=0 ; tmp ; ++i , tmp = tmp->getNext() ) tmp->setValue(arr[i]);
+    delete arr;
 }
 
 //10. void Begin() que coloca el puntero pActual a la cabeza de la lista.         

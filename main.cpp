@@ -53,7 +53,7 @@ int main()
     L3.print2();
     L3.print3();
     L3.reversePrint();
-    L3.sortA();
+    L3.sortD();
     L3.print();
     L3.print2();
     L3.print3();
