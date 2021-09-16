@@ -4,6 +4,8 @@
 #include "node.h"
 #include <iostream>
 
+int maxAux(int,int);
+
 template<typename T>
 class LinkedList{
     private:
