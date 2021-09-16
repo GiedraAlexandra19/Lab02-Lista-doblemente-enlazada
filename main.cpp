@@ -1,6 +1,7 @@
 #include<iostream>
 #include "linkedList.h"
 using namespace std;
+int maxAux(int,int);
 int main()
 {
     cout << "----------------------------- Lista 1 -----------------------------------" << endl;
