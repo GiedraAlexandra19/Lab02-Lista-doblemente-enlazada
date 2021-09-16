@@ -13,6 +13,8 @@ class LinkedList{
         Node<T>* pTail;
         Node<T>* pActual;
         int _size;
+        T partition( T* , int , int , bool );
+        void quickSort( T* , int , int , bool );
     public:
         LinkedList() :pHead(nullptr), pTail(nullptr), pActual(nullptr), _size(0) {}
         LinkedList(int, T);
@@ -22,18 +24,23 @@ class LinkedList{
         void push_front(T);
         Node<T>* get(int);
         void insert(int, T);
+        void print();
+        //homework
+        int Maximum();
+        int RMaximum(Node<T>*);
+        void Rprint(Node<T>*);
+        void reverseRPrint(Node<T>*);
+        void reversePrint();
+        int PairCount();
+        void sortA();
+        void sortD();
         void Begin();
         void Last();
         void Next();
         void Previus();
         T GetDato();
-        void print();
-        void reversePrint();
-        int Maximum();
-        int RMaximum(Node<T>*);
-        void Rprint(Node<T>*);
-        void reverseRPrint(Node<T>*);
-        int PairCount();
+        void print2();
+        void print3();
 
     /*
     1. Implementar una función maximo de manera iterativa.                          (jesus)
@@ -46,7 +53,11 @@ class LinkedList{
     8. Implementar una función que ordene los datos de forma descendente.           (alejandro)
     9. Añadir un miembro dato/variable a la lista denominado pActual (puntero a nodo) y crear
         las siguientes funciones:
- 
+    10. void Begin() que coloca el puntero pActual a la cabeza de la lista.         (angie)
+    11. void Last() que coloca el puntero pActual a al final de la lista.           (angie)
+    12. void Next() que mueve el puntero pActual al siguiente nodo.                 (angie)
+    13. void Previus() que mueve el puntero pActual al nodo anterior.               (angie)
+    14. T GetDato() que retorna el dato apuntado por pActual.                       (angie)
     15. Usando las funciones, Begin y Next implemente una función para imprimir los datas de            (alejandro)
         la lista.
     16. Usando las funciones, Last y Previus implemente una función para imprimir los datas de          (alejandro)
@@ -130,41 +141,6 @@ void LinkedList<T>::insert(int pos, T value){     //inserta elemento por posicio
     }
 }
 
-//10. void Begin() que coloca el puntero pActual a la cabeza de la lista.         
-template<typename T>
-void LinkedList<T>::Begin() {
-/*   while (pActual && pActual->getPrev())
-        pActual = pActual->getPrev();*/
-    pActual = pHead;
-}
-
-//11. void Last() que coloca el puntero pActual a al final de la lista.           
-template<typename T>
-void LinkedList<T>::Last() {
-    while (pActual && pActual->getNext())
-        pActual = pActual->getNext();
-}
-
-//12. void Next() que mueve el puntero pActual al siguiente nodo.                 
-template<typename T>
-void LinkedList<T>::Next() {
-    if (pActual)
-        pActual = pActual->getNext();
-}
-
-//13. void Previus() que mueve el puntero pActual al nodo anterior.               
-template<typename T>
-void LinkedList<T>::Previus() {
-    if (pActual)
-        pActual = pActual->getPrev();
-}
-
-//14. T GetDato() que retorna el dato apuntado por pActual.                       
-template<typename T>
-T LinkedList<T>::GetDato() {
-    return pActual->getValue();  
-}
-
 template<typename T>
 void LinkedList<T>::print(){
     Node<T>* tmp = pHead;
@@ -174,17 +150,6 @@ void LinkedList<T>::print(){
     }
     std::cout << '\n';
 }
-
-template<typename T>
-void LinkedList<T>::reversePrint(){
-    Node<T>* rTmp = pTail;
-    while (rTmp){
-        std::cout << rTmp->getValue() << ' ';
-        rTmp = rTmp->getPrev();
-    }
-    std::cout << '\n';
-}
-
 
 template<typename T>
 int LinkedList<T>::Maximum()
@@ -244,6 +209,16 @@ void LinkedList<T>::reverseRPrint(Node<T>* lista)
 }
 
 template<typename T>
+void LinkedList<T>::reversePrint(){
+    Node<T>* rTmp = pTail;
+    while (rTmp){
+        std::cout << rTmp->getValue() << ' ';
+        rTmp = rTmp->getPrev();
+    }
+    std::cout << '\n';
+}
+
+template<typename T>
 int LinkedList<T>::PairCount()
 {
     Node<T>* tmp = pHead;
@@ -254,6 +229,131 @@ int LinkedList<T>::PairCount()
         tmp = tmp->getNext();
     }
     return pairs;
+}
+
+template<typename T>
+T LinkedList<T>::partition( T* a , int i , int j , bool op )
+{
+    T p = a[i];                       // p is the pivot
+    int m = i;                          // S1 and S2 are initially empty
+    for (int k = i + 1; k <= j; k++)
+    {                                   // explore the unknown region
+        if (op)
+        {
+            if ( a[k] < p )
+            {                               // case 2
+                m++;
+                std::swap(a[k], a[m]);           // C++ STL algorithm std::swap
+            } 
+        }                              // notice that we do nothing in case 1: a[k] >= p
+        else
+        {
+            if ( a[k] > p )
+            {                               // case 2
+                m++;
+                std::swap(a[k], a[m]);           // C++ STL algorithm std::swap
+            }                               // notice that we do nothing in case 1: a[k] >= p
+        }
+    }
+    std::swap(a[i], a[m]);                   // final step, swap pivot with a[m]
+    return m; 
+}
+
+template<typename T>
+void LinkedList<T>::quickSort( T* a , int i , int j , bool op)
+{
+    if (i < j)
+    {
+        int m = partition( a , i , j , op );        // O(N)
+        // a[i..j] ~> a[i..m–1], pivot, a[m+1..j]
+        quickSort( a , i , m - 1 , op );               // recursively sort left subarray
+        // a[m] = pivot is already sorted after partition
+        quickSort( a , m + 1 , j , op );              // then sort right subarray
+    }
+}
+
+template<typename T>
+void LinkedList<T>::sortA()
+{
+    T* arr = new T[_size];
+    Node<T>* tmp = pHead;
+    for( int i=0 ; tmp ; ++i , tmp = tmp->getNext() ) arr[i]=tmp->getValue();
+    quickSort( arr , 0 , _size-1 , true );
+    tmp = pHead;
+    for( int i=0 ; tmp ; ++i , tmp = tmp->getNext() ) tmp->setValue(arr[i]);
+}
+
+template<typename T>
+void LinkedList<T>::sortD()
+{
+    T* arr = new T[_size];
+    Node<T>* tmp = pHead;
+    for( int i=0 ; tmp ; ++i , tmp = tmp->getNext() ) arr[i]=tmp->getValue();
+    quickSort( arr , 0 , _size-1 , false );
+    tmp = pHead;
+    for( int i=0 ; tmp ; ++i , tmp = tmp->getNext() ) tmp->setValue(arr[i]);
+}
+
+//10. void Begin() que coloca el puntero pActual a la cabeza de la lista.         
+template<typename T>
+void LinkedList<T>::Begin() {
+/*   while (pActual && pActual->getPrev())
+        pActual = pActual->getPrev();*/
+    pActual = pHead;
+}
+
+//11. void Last() que coloca el puntero pActual a al final de la lista.           
+template<typename T>
+void LinkedList<T>::Last() {
+/*    while (pActual && pActual->getNext())
+        pActual = pActual->getNext();*/
+    pActual = pTail;
+}
+
+//12. void Next() que mueve el puntero pActual al siguiente nodo.                 
+template<typename T>
+void LinkedList<T>::Next() {
+    if ( pActual->getNext() )
+        pActual = pActual->getNext();
+}
+
+//13. void Previus() que mueve el puntero pActual al nodo anterior.               
+template<typename T>
+void LinkedList<T>::Previus() {
+    if ( pActual->getPrev() )
+        pActual = pActual->getPrev();
+}
+
+//14. T GetDato() que retorna el dato apuntado por pActual.                       
+template<typename T>
+T LinkedList<T>::GetDato() {
+    return pActual->getValue();  
+}
+
+template<typename T>
+void LinkedList<T>::print2()
+{
+    Begin();
+    while(true)
+    {
+        std::cout<<GetDato()<<' ';
+        if( !pActual->getNext() ) break;
+        Next();
+    }
+    std::cout<<'\n';
+}
+
+template<typename T>
+void LinkedList<T>::print3()
+{
+    Last();
+    while(true)
+    {
+        std::cout<<GetDato()<<' ';
+        if( !pActual->getPrev() ) break;
+        Previus();
+    }
+    std::cout<<'\n';
 }
 
 #endif
