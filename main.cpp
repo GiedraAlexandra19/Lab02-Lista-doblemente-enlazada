@@ -58,4 +58,8 @@ int main()
     L3.print2();
     L3.print3();
     L3.reversePrint();
+    cout<<L3.recursiveMaximun()<<'\n';
+    cout<<L3.Maximum()<<'\n';
+    L3.recursivePrint();
+    L3.reverseRecursivePrint();
 }

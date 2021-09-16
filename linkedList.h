@@ -11,10 +11,13 @@ class LinkedList{
     private:
         Node<T>* pHead;
         Node<T>* pTail;
-        Node<T>* pActual;
+        Node<T>* pActual;               // 9.
         int _size;
-        T partition( T* , int , int , bool );
-        void quickSort( T* , int , int , bool );
+        int RMaximum(Node<T>*);         // 2.
+        void Rprint(Node<T>*);          // 3.
+        void reverseRPrint(Node<T>*);   // 4.
+        T partition( T* , int , int , bool );       // 7. ,8.
+        void quickSort( T* , int , int , bool );    // 7. ,8.
     public:
         LinkedList() :pHead(nullptr), pTail(nullptr), pActual(nullptr), _size(0) {}
         LinkedList(int, T);
@@ -26,55 +29,36 @@ class LinkedList{
         void insert(int, T);
         void print();
         //homework
-        int Maximum();
-        int RMaximum(Node<T>*);
-        void Rprint(Node<T>*);
-        void reverseRPrint(Node<T>*);
-        void reversePrint();
-        int PairCount();
-        void sortA();
-        void sortD();
-        void Begin();
-        void Last();
-        void Next();
-        void Previus();
-        T GetDato();
-        void print2();
-        void print3();
-
-    /*
-    1. Implementar una función maximo de manera iterativa.                          (jesus)
-    2. Implementar una función maximo de forma recursiva.                           (jesus)
-    3. Implementar una función recursiva que imprima los datos de inicio a fin.     (jesus)
-    4. Implementar una función recursiva que imprima los datos de fin a inicio.     (jesus)
-    5. Implementar una función iterativa que imprima los datos de fin a inicio.     (alejandro)
-    6. Implementar una función que cuente el número de elementos pares.  ́           (jesus)
-    7. Implementar una función que ordene los datos de forma ascendente.            (alejandro)
-    8. Implementar una función que ordene los datos de forma descendente.           (alejandro)
-    9. Añadir un miembro dato/variable a la lista denominado pActual (puntero a nodo) y crear
-        las siguientes funciones:
-    10. void Begin() que coloca el puntero pActual a la cabeza de la lista.         (angie)
-    11. void Last() que coloca el puntero pActual a al final de la lista.           (angie)
-    12. void Next() que mueve el puntero pActual al siguiente nodo.                 (angie)
-    13. void Previus() que mueve el puntero pActual al nodo anterior.               (angie)
-    14. T GetDato() que retorna el dato apuntado por pActual.                       (angie)
-    15. Usando las funciones, Begin y Next implemente una función para imprimir los datas de            (alejandro)
-        la lista.
-    16. Usando las funciones, Last y Previus implemente una función para imprimir los datas de          (alejandro)
-        la lista.
-    */
+        int Maximum();                  // 1.
+        int recursiveMaximun();         // 2.
+        void recursivePrint();          // 3.
+        void reverseRecursivePrint();   // 4.
+        void reversePrint();            // 5.
+        int PairCount();                // 6.
+        void sortA();                   // 7.   ascendente
+        void sortD();                   // 8.   descendente
+        void Begin();                   // 10.
+        void Last();                    // 11.
+        void Next();                    // 12.
+        void Previus();                 // 13.
+        T GetDato();                    // 14.
+        void print2();                  // 15.
+        void print3();                  // 16.
 };
 
 template<typename T>
-LinkedList<T>::LinkedList(int size, T value){
+LinkedList<T>::LinkedList(int size, T value)
+{
     _size = 0;
     while (size--) push_back(value);
 }
 
 template<typename T>
-LinkedList<T>::~LinkedList(){
+LinkedList<T>::~LinkedList()
+{
     Node<T>* tmp = pHead;
-    while (tmp){
+    while (tmp)
+    {
         tmp = pHead->getNext();
         delete pHead;
         pHead = tmp;
@@ -82,13 +66,16 @@ LinkedList<T>::~LinkedList(){
 }
 
 template<typename T>
-void LinkedList<T>::push_back(T value){
+void LinkedList<T>::push_back(T value)
+{
     Node<T>* nodo = new Node<T>(value);
-    if (!pHead){                        //si esta vacio
+    if (!pHead)                        //si esta vacio
+    {
         pHead = nodo;                   //nuevo head
         pTail = pHead;                  //nuevo tail
     }
-    else{                               //si hay al menos un elemento
+    else                               //si hay al menos un elemento
+    {
         nodo->setPrev(pTail);           // tail <- nodo -> null
         pTail->setNext(nodo);           // tail <-> nodo -> null
         pTail = nodo;                   // nuevo tail
@@ -97,13 +84,16 @@ void LinkedList<T>::push_back(T value){
 }
 
 template<typename T>
-void LinkedList<T>::push_front(T value){
+void LinkedList<T>::push_front(T value)
+{
     Node<T>* nodo = new Node<T>(value);
-    if (!pHead){                        //si esta vacio
+    if (!pHead)                        //si esta vacio
+    {
         pHead = nodo;                   //nuevo head
         pTail = pHead;                  //nuevo tail
     }
-    else{                                //si hay al menos un elemento
+    else                                //si hay al menos un elemento
+    {
         nodo->setNext(pHead);           // null <- nodo -> head
         pHead->setPrev(nodo);           // null <- nodo <-> head
         pHead = nodo;                   // nuevo head
@@ -112,9 +102,11 @@ void LinkedList<T>::push_front(T value){
 }
 
 template<typename T>
-Node<T>* LinkedList<T>::get(int pos){      //devuelve puntero por posicion
+Node<T>* LinkedList<T>::get(int pos)      //devuelve puntero por posicion
+{
     Node<T>* tmp = nullptr;
-    if (pos < _size){                       //si la pos es menor que el tamaño
+    if (pos < _size)                       //si la pos es menor que el tamaño
+    {
         tmp = pHead;
         for (int i = 0; i < pos; i++) tmp = tmp->getNext();   //avanza por la lista hasta que i = pos
     }
@@ -122,13 +114,16 @@ Node<T>* LinkedList<T>::get(int pos){      //devuelve puntero por posicion
 }
 
 template<typename T>
-void LinkedList<T>::insert(int pos, T value){     //inserta elemento por posicion
+void LinkedList<T>::insert(int pos, T value)     //inserta elemento por posicion
+{
     if (!pHead) push_front(value);                   //si esta vacio inserta al inicio
     else if (pos >= _size) return;                //si pos es mayor o igual al tamaño, termina
-    else{                                            //en otro caso
+    else                                            //en otro caso
+    {
         if (pos == 0) push_front(value);             //inserta al inicio
         else if (pos == _size - 1) push_back(value);   //inserta al final
-        else{
+        else
+        {
             Node<T>* nodo = new Node<T>(value);
             Node<T>* prev = get(pos - 1);             //obtiene el elemento anterior
             Node<T>* next = prev->getNext();        //guarda el sig
@@ -142,9 +137,11 @@ void LinkedList<T>::insert(int pos, T value){     //inserta elemento por posicio
 }
 
 template<typename T>
-void LinkedList<T>::print(){
+void LinkedList<T>::print()
+{
     Node<T>* tmp = pHead;
-    while (tmp){
+    while (tmp)
+    {
         std::cout << tmp->getValue() << ' ';
         tmp = tmp->getNext();
     }
@@ -158,7 +155,8 @@ int LinkedList<T>::Maximum()
     int max=tmp->getValue();
     while(tmp)
     {
-        if(tmp->getValue()>max){
+        if(tmp->getValue()>max)
+        {
             max=tmp->getValue();
         }
         tmp = tmp->getNext();
@@ -166,29 +164,42 @@ int LinkedList<T>::Maximum()
     return max;
 }
 
-int maxAux(int a,int b){
-    if (a>b){return a;}else{return b;}
+int maxAux(int a,int b)
+{
+    if ( a>b ){ return a; }else{ return b; }
 }
 
 template<typename T>
 int LinkedList<T>::RMaximum(Node<T>* lista)
 {   
     int max=lista->getValue();
-    if(lista->getNext()==nullptr){
+    if( lista->getNext() == nullptr )
+    {
         return lista->getValue();
-    }else{
+    }
+    else
+    {
         lista = lista->getNext();
         return maxAux(max,RMaximum(lista));
     }
 }
 
 template<typename T>
+int LinkedList<T>::recursiveMaximun()
+{
+    return RMaximum( pHead );
+}
+
+template<typename T>
 void LinkedList<T>::Rprint(Node<T>* lista)
 {
-    if(lista==nullptr){
+    if( lista==nullptr )
+    {
         std::cout<<std::endl;
         return;
-    }else{
+    }
+    else
+    {
         std::cout<<lista->getValue()<<' ';
         lista = lista->getNext();
         return Rprint(lista);
@@ -196,12 +207,21 @@ void LinkedList<T>::Rprint(Node<T>* lista)
 }
 
 template<typename T>
+void LinkedList<T>::recursivePrint()
+{
+    Rprint( pHead );
+}
+
+template<typename T>
 void LinkedList<T>::reverseRPrint(Node<T>* lista)
 {
-    if(lista==nullptr){
+    if( lista==nullptr )
+    {
         std::cout<<std::endl;
         return;
-    }else{
+    }
+    else
+    {
         std::cout<<lista->getValue()<<' ';
         lista = lista->getPrev();
         return reverseRPrint(lista);
@@ -209,9 +229,17 @@ void LinkedList<T>::reverseRPrint(Node<T>* lista)
 }
 
 template<typename T>
-void LinkedList<T>::reversePrint(){
+void LinkedList<T>::reverseRecursivePrint()
+{
+    reverseRPrint( pTail );
+}
+
+template<typename T>
+void LinkedList<T>::reversePrint()
+{
     Node<T>* rTmp = pTail;
-    while (rTmp){
+    while (rTmp)
+    {
         std::cout << rTmp->getValue() << ' ';
         rTmp = rTmp->getPrev();
     }
@@ -225,7 +253,7 @@ int LinkedList<T>::PairCount()
     int pairs=0;
     while(tmp)
     {
-        if(tmp->getValue()%2==0)pairs++;
+        if( tmp->getValue()%2 == 0 ) pairs++;
         tmp = tmp->getNext();
     }
     return pairs;
@@ -299,37 +327,38 @@ void LinkedList<T>::sortD()
 
 //10. void Begin() que coloca el puntero pActual a la cabeza de la lista.         
 template<typename T>
-void LinkedList<T>::Begin() {
-/*   while (pActual && pActual->getPrev())
-        pActual = pActual->getPrev();*/
+void LinkedList<T>::Begin() 
+{
     pActual = pHead;
 }
 
 //11. void Last() que coloca el puntero pActual a al final de la lista.           
 template<typename T>
-void LinkedList<T>::Last() {
-/*    while (pActual && pActual->getNext())
-        pActual = pActual->getNext();*/
+void LinkedList<T>::Last() 
+{
     pActual = pTail;
 }
 
 //12. void Next() que mueve el puntero pActual al siguiente nodo.                 
 template<typename T>
-void LinkedList<T>::Next() {
+void LinkedList<T>::Next() 
+{
     if ( pActual->getNext() )
         pActual = pActual->getNext();
 }
 
 //13. void Previus() que mueve el puntero pActual al nodo anterior.               
 template<typename T>
-void LinkedList<T>::Previus() {
+void LinkedList<T>::Previus() 
+{
     if ( pActual->getPrev() )
         pActual = pActual->getPrev();
 }
 
 //14. T GetDato() que retorna el dato apuntado por pActual.                       
 template<typename T>
-T LinkedList<T>::GetDato() {
+T LinkedList<T>::GetDato() 
+{
     return pActual->getValue();  
 }
 
