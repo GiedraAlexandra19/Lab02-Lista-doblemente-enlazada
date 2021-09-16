@@ -6,27 +6,32 @@
 
 template<typename T>
 class LinkedList{
-private:
-    Node<T>* pHead;
-    Node<T>* pTail;
-    Node<T>* pActual;
-    int _size;
-public:
-    LinkedList() :pHead(nullptr), pTail(nullptr), pActual(nullptr), _size(0) {}
-    LinkedList(int, T);
-    ~LinkedList();
-    int size() { return _size; }
-    void push_back(T);
-    void push_front(T);
-    Node<T>* get(int);
-    void insert(int, T);
-    void Begin();
-    void Last();
-    void Next();
-    void Previus();
-    T GetDato();
-    void print();
-    void reversePrint();
+    private:
+        Node<T>* pHead;
+        Node<T>* pTail;
+        Node<T>* pActual;
+        int _size;
+    public:
+        LinkedList() :pHead(nullptr), pTail(nullptr), pActual(nullptr), _size(0) {}
+        LinkedList(int, T);
+        ~LinkedList();
+        int size() { return _size; }
+        void push_back(T);
+        void push_front(T);
+        Node<T>* get(int);
+        void insert(int, T);
+        void Begin();
+        void Last();
+        void Next();
+        void Previus();
+        T GetDato();
+        void print();
+        void reversePrint();
+        int Maximum();
+        int RMaximum(Node<T>*);
+        void Rprint(Node<T>*);
+        void reverseRPrint(Node<T>*);
+        int PairCount();
 
     /*
     1. Implementar una función maximo de manera iterativa.                          (jesus)
@@ -176,6 +181,77 @@ void LinkedList<T>::reversePrint(){
         rTmp = rTmp->getPrev();
     }
     std::cout << '\n';
+}
+
+
+template<typename T>
+int LinkedList<T>::Maximum()
+{
+    Node<T>* tmp = pHead;
+    int max=tmp->getValue();
+    while(tmp)
+    {
+        if(tmp->getValue()>max){
+            max=tmp->getValue();
+        }
+        tmp = tmp->getNext();
+    }
+    return max;
+}
+
+int maxAux(int a,int b){
+    if (a>b){return a;}else{return b;}
+}
+
+template<typename T>
+int LinkedList<T>::RMaximum(Node<T>* lista)
+{   
+    int max=lista->getValue();
+    if(lista->getNext()==nullptr){
+        return lista->getValue();
+    }else{
+        lista = lista->getNext();
+        return maxAux(max,RMaximum(lista));
+    }
+}
+
+template<typename T>
+void LinkedList<T>::Rprint(Node<T>* lista)
+{
+    if(lista==nullptr){
+        std::cout<<std::endl;
+        return;
+    }else{
+        std::cout<<lista->getValue()<<' ';
+        lista = lista->getNext();
+        return Rprint(lista);
+    }
+}
+
+template<typename T>
+void LinkedList<T>::reverseRPrint(Node<T>* lista)
+{
+    if(lista==nullptr){
+        std::cout<<std::endl;
+        return;
+    }else{
+        std::cout<<lista->getValue()<<' ';
+        lista = lista->getPrev();
+        return reverseRPrint(lista);
+    }
+}
+
+template<typename T>
+int LinkedList<T>::PairCount()
+{
+    Node<T>* tmp = pHead;
+    int pairs=0;
+    while(tmp)
+    {
+        if(tmp->getValue()%2==0)pairs++;
+        tmp = tmp->getNext();
+    }
+    return pairs;
 }
 
 #endif
