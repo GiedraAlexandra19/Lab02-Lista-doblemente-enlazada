@@ -28,7 +28,6 @@ public:
     void print();
     void reversePrint();
 
-
     /*
     1. Implementar una función maximo de manera iterativa.                          (jesus)
     2. Implementar una función maximo de forma recursiva.                           (jesus)
