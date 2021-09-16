@@ -15,6 +15,9 @@ int main()
     L1.insert(1, 5);
     L1.print();
     L1.reversePrint();
+    
+    cout<<"El maximo valor es "<<L1.Maximum()<<endl;
+    cout<<"El numero de elementos pares es "<<L1.PairCount()<<endl;
 
     L1.Begin();
     cout<<"Cabeza de la lista: "<<L1.GetDato()<<endl;
@@ -25,8 +28,8 @@ int main()
     LinkedList<int> L2;
     int n = 10;
     while (n--) L2.insert(0, n);
-    L2.print();
-    L2.reversePrint();
+    L1.Rprint(L1.get(0));
+    L1.reverseRPrint(L1.get(L1.size()-1));
     L2.Begin();
     cout << "Cabeza de la lista: " << L2.GetDato() << endl;
     L2.Last();
